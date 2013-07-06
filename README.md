@@ -1,10 +1,10 @@
-# Synopsis
+## Synopsis
 
 helm source for [Go programming language](http://golang.org/)'s package.
 
-# Installation
+## Installation
 
-# Manual
+### Manual
 
 Just drop `helm-go-package.el`. somewhere in your `load-path`.
 
@@ -13,14 +13,14 @@ Just drop `helm-go-package.el`. somewhere in your `load-path`.
 (require 'helm-go-package)
 ```
 
-## MELPA
+### MELPA
 
 If you're an Emacs 24 user or you have a recent version of package.el
 you can install `helm-go-package.el` from the [MELPA](http://melpa.milkbox.net/) repository.
 
-# Usage
+## Usage
 
-## `helm-go-package`
+### `helm-go-package`
 
 Helm for Go programming language's package.
 
@@ -36,7 +36,7 @@ This persistent action is available.
 
 * Show documentation
 
-# Customize
+## Customize
 
 ### `helm-go-package-godoc-browse-url-function`
 
