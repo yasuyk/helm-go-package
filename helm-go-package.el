@@ -75,7 +75,7 @@ not found."
     found))
 
 (defconst helm-go-package-godoc-format
-  "http://godoc.org/%s."
+  "http://godoc.org/%s"
   "Format of godoc.org for browse URL.")
 
 (defun helm-go-package--godoc-browse-url (candidate)
