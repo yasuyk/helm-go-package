@@ -70,7 +70,7 @@ not found."
             (setq found (go-ffap-directory
                          name (if (atom elt) (list elt) elt))))))
       (error
-       (message "In go-ffap-directory: %s"
+       (message "In helm-go-package--locate-directory: %s"
                 (error-message-string err))))
     found))
 
