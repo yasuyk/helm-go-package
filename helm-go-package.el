@@ -67,7 +67,7 @@ not found."
                   (setq elt (expand-file-name name elt)))
                  (push elt found)))
            (elt
-            (setq found (go-ffap-directory
+            (setq found (helm-go-package--locate-directory
                          name (if (atom elt) (list elt) elt))))))
       (error
        (message "In helm-go-package--locate-directory: %s"
