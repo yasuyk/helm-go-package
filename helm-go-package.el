@@ -26,7 +26,8 @@
 ;; Add the following to your Emacs init file:
 ;;
 ;; (require 'helm-go-package)  ;; Not necessary if using ELPA package
-;; (substitute-key-definition 'go-import-add 'helm-go-package go-mode-map)
+;; (eval-after-load 'go-mode
+;;   '(substitute-key-definition 'go-import-add 'helm-go-package go-mode-map))
 
 ;; That's all.
 
