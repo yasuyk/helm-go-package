@@ -52,7 +52,8 @@ Function to display package documentation on [GoDoc][godoc]. It is `browse-url` 
 Add the following to your emacs init file:
 
     (require 'helm-go-package)  ;; Not necessary if using ELPA package
-    (substitute-key-definition 'go-import-add 'helm-go-package go-mode-map)
+    (eval-after-load 'go-mode
+      '(substitute-key-definition 'go-import-add 'helm-go-package go-mode-map))
 
 [godoc]:http://godoc.org/
 [helm]:https://github.com/emacs-helm/helm
