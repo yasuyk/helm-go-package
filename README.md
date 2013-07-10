@@ -15,7 +15,6 @@ Just drop `helm-go-package.el`. somewhere in your `load-path`.
 
 ```lisp
 (add-to-list 'load-path "~/somewhere")
-(require 'helm-go-package)
 ```
 
 ### MELPA
