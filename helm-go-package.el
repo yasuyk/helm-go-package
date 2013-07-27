@@ -39,7 +39,7 @@
 (defgroup helm-go-package nil
   "Go package related Applications and libraries for Helm."
   :prefix "helm-go-package-"
-  :group 'http)
+  :group 'helm)
 
 (defcustom helm-go-package-godoc-browse-url-function 'browse-url
   "Function to display package documentation on godoc.org.
