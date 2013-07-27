@@ -55,6 +55,10 @@ These actions are available.
 
 Function to display package documentation on [GoDoc][godoc]. It is `browse-url` by default.
 
+### `helm-source-go-package-godoc-description`
+
+Face used for Godoc description.
+
 ## Sample configuration
 
 Add the following to your emacs init file:
