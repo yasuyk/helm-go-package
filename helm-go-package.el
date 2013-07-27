@@ -1,11 +1,11 @@
-;;; helm-go-package.el --- helm source for Go programming language's package
+;;; helm-go-package.el --- helm sources for Go programming language's package
 
 ;; Copyright (C) 2013 Yasuyuki Oka
 
 ;; Author: Yasuyuki Oka <yasuyk@gmail.com>
 ;; Version: DEV
 ;; URL: https://github.com/yasuyk/helm-go-package
-;; Package-Requires: ((helm "1.0") (go-mode "9"))
+;; Package-Requires: ((helm "1.0") (go-mode "9") (deferred "0.3.2"))
 ;; Keywords: helm go
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -35,6 +35,7 @@
 
 (require 'helm)
 (require 'go-mode)
+(require 'deferred)
 
 (defgroup helm-go-package nil
   "Go package related Applications and libraries for Helm."
@@ -46,6 +47,12 @@
 It is `browse-url' by default."
   :group 'helm-go-package
   :type 'symbol)
+
+;;; Faces
+(defface helm-source-go-package-godoc-description
+    '((t (:foreground "yellow")))
+  "Face used for Godoc description."
+  :group 'helm-go-package)
 
 (defun helm-go-package--package-paths ()
   (list
@@ -92,7 +99,7 @@ not found."
   (godoc candidate))
 
 (defvar helm-source-go-package
-  '((name . "Go packages")
+  '((name . "Go local packages")
     (candidates . go-packages)
     (persistent-action . helm-go-package--persistent-action)
     (persistent-help . "Show documentation")
@@ -104,12 +111,60 @@ not found."
                ("Display GoDoc" . helm-go-package--godoc-browse-url)
                ("Visit package's directory" .
                 helm-go-package--visit-package-directory))))
-  "Helm source for Go programming language' package.")
+  "Helm source for Go local package.")
+
+(defvar helm-go-package--search-on-godoc-command-alist
+  (cond ((executable-find "curl")
+         '(start-process  "curl" "-H" "Accept: text/plain"))
+        ((executable-find "wget")
+         '(start-process-shell-command "wget" "-O" "-" "--quiet" "--header='Accept: text/plain'"))
+        (t '())))
+
+(defun helm-go-package--search-on-godoc-process ()
+  (apply (car helm-go-package--search-on-godoc-command-alist)
+         "*helm-go-pacakge-search-on-godoc*" nil
+         (append (cdr helm-go-package--search-on-godoc-command-alist)
+                 (list (format "http://godoc.org/\?\q=%s" helm-pattern)))))
+
+(defun helm-source-go-package-search-on-godoc--filtered-candidate-transformer (candidates source)
+  (mapcar (lambda (e)
+            (let* ((substrings (split-string e " " t))
+                   (package (car substrings))
+                   (description (mapconcat 'identity (cdr substrings) " "))
+                   (display (format "%s %s" package
+                                    (propertize description 'face
+                                                'helm-source-go-package-godoc-description))))
+              `(,display . ,package)))
+            candidates))
+
+(defun helm-go-package--download-and-install (candidate)
+  (cl-block nil
+    (unless (y-or-n-p "Download and install packages and dependencies ?")
+      (cl-return)))
+  (lexical-let ((package candidate))
+    (deferred:$
+      (deferred:process-shell (format "go get %s" package))
+      (deferred:error it 'message)
+      (deferred:next
+        (lambda () (message (format "%s have beeen installed." package)))))))
+
+(defvar helm-source-go-package-search-on-godoc
+  '((name . "search Go packages on Godoc")
+    (candidates-process . helm-go-package--search-on-godoc-process)
+    (filtered-candidate-transformer . helm-source-go-package-search-on-godoc--filtered-candidate-transformer)
+    (requires-pattern . 3)
+    (persistent-action . t) ;; Disable persistent-action
+    (persistent-help . "DoNothing")
+    (action . (("Download and install" . helm-go-package--download-and-install)
+               ("Display GoDoc" . helm-go-package--godoc-browse-url)))
+    (volatile)
+    (delayed)))
 
 ;;;###autoload
 (defun helm-go-package ()
   "Helm for Go programming language's package.
 
+\"Go local packages\"
 These actions are available.
 * Add a new import
 * Add a new import as
@@ -118,9 +173,15 @@ These actions are available.
 * Visit package's directory
 
 This persistent action is available.
-* Show documentation"
+* Show documentation
+
+\"search Go packages on Godoc\"
+These actions are available.
+* Download and install
+* Display GoDoc"
   (interactive)
-  (helm-other-buffer 'helm-source-go-package
+  (helm-other-buffer '(helm-source-go-package
+                       helm-source-go-package-search-on-godoc)
                      "*helm go package*"))
 
 (provide 'helm-go-package)
