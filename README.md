@@ -28,6 +28,8 @@ you can install `helm-go-package.el` from the [MELPA](http://melpa.milkbox.net/)
 
 Helm for Go programming language's package.
 
+#### Go local packages
+
 These actions are available.
 
 * Add a new import
@@ -39,6 +41,13 @@ These actions are available.
 This persistent action is available.
 
 * Show documentation
+
+#### search Go packages on Godoc
+
+These actions are available.
+
+* Download and install
+* Display [GoDoc][godoc]
 
 ## Customize
 
