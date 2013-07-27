@@ -1,6 +1,6 @@
 ## Synopsis
 
-helm source for [Go programming language](http://golang.org/)'s package.
+helm sources for [Go programming language](http://golang.org/)'s package.
 
 ## Requirements
 
