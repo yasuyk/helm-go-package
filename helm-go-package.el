@@ -95,8 +95,8 @@ not found."
                    candidate (helm-go-package--package-paths)))))
 
 (defun helm-go-package--persistent-action (candidate)
-  (call-interactively 'other-window)
-  (godoc candidate))
+  (with-selected-window (select-window (next-window))
+    (godoc candidate)))
 
 (defvar helm-source-go-package
   '((name . "Go local packages")
