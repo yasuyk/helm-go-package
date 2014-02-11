@@ -146,7 +146,7 @@ not found."
       (deferred:process-shell (format "go get %s" package))
       (deferred:error it 'message)
       (deferred:next
-        (lambda () (message (format "%s have beeen installed." package)))))))
+        (lambda () (message (format "%s have been installed." package)))))))
 
 (defvar helm-source-go-package-search-on-godoc
   '((name . "search Go packages on Godoc")
