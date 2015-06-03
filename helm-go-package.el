@@ -55,11 +55,13 @@ It is `browse-url' by default."
   :group 'helm-go-package)
 
 (defun helm-go-package--package-paths ()
-  (list
-   (format "%s/src/pkg"
-           (car (split-string (shell-command-to-string "go env GOROOT") "\n")))
-   (format "%s/src"
-           (car (split-string (shell-command-to-string "go env GOPATH") "\n")))))
+  (let ((goroot (car (split-string (shell-command-to-string "go env GOROOT") "\n"))))
+    (list
+     (format "%s/src" goroot) ;; Go >= 1.4
+     (format "%s/src"
+             (car (split-string (shell-command-to-string "go env GOPATH") "\n")))
+     (format "%s/src/pkg" goroot)))) ;; Go <= 1.3.3
+
 
 (defun helm-go-package--locate-directory (name path)
   "Locate all occurrences of the sub-directory NAME in PATH.
