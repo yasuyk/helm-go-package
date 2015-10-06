@@ -85,7 +85,7 @@ not found."
     found))
 
 (defconst helm-go-package-godoc-format
-  "http://godoc.org/%s"
+  "https://godoc.org/%s"
   "Format of godoc.org for browse URL.")
 
 (defun helm-go-package--godoc-browse-url (candidate)
@@ -126,7 +126,7 @@ not found."
   (apply (car helm-go-package--search-on-godoc-command-alist)
          "*helm-go-pacakge-search-on-godoc*" nil
          (append (cdr helm-go-package--search-on-godoc-command-alist)
-                 (list (format "http://godoc.org/\?\q=%s" helm-pattern)))))
+                 (list (format "https://godoc.org/\?\q=%s" helm-pattern)))))
 
 (defun helm-source-go-package-search-on-godoc--filtered-candidate-transformer (candidates source)
   (mapcar (lambda (e)
