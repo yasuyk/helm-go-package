@@ -50,7 +50,8 @@ It is `browse-url' by default."
 
 ;;; Faces
 (defface helm-source-go-package-godoc-description
-    '((t (:foreground "yellow")))
+  (let ((str (face-foreground 'font-lock-string-face)))
+    `((t (:foreground ,str))))
   "Face used for Godoc description."
   :group 'helm-go-package)
 
