@@ -1,4 +1,4 @@
-## Synopsis
+## helm-go-package [![licence][gplv3-badge]][gplv3-link] [![melpa badge][melpa-badge]][melpa-link] [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
 
 helm sources for [Go programming language](http://golang.org/)'s package.
 
@@ -70,3 +70,11 @@ Add the following to your emacs init file:
 [godoc]:http://godoc.org/
 [helm]:https://github.com/emacs-helm/helm
 [go-mode]:https://github.com/dominikh/go-mode.el
+[travis-badge]: https://travis-ci.org/yasuyk/helm-go-package.svg
+[travis-link]: https://travis-ci.org/yasuyk/helm-go-package
+[melpa-link]: http://melpa.org/#/helm-go-package
+[melpa-stable-link]: http://stable.melpa.org/#/helm-go-package
+[melpa-badge]: http://melpa.org/packages/helm-go-package-badge.svg
+[melpa-stable-badge]: http://stable.melpa.org/packages/helm-go-package-badge.svg
+[gplv3-badge]:http://img.shields.io/badge/license-GPLv3-blue.svg
+[gplv3-link]:https://www.gnu.org/copyleft/gpl.html
