@@ -1,6 +1,6 @@
 ;;; helm-go-package.el --- helm sources for Go programming language's package
 
-;; Copyright (C) 2013 Yasuyuki Oka
+;; Copyright (C) 2013-2016 Yasuyuki Oka
 
 ;; Author: Yasuyuki Oka <yasuyk@gmail.com>
 ;; Version: DEV
