@@ -3,7 +3,7 @@
 ;; Copyright (C) 2013-2016 Yasuyuki Oka
 
 ;; Author: Yasuyuki Oka <yasuyk@gmail.com>
-;; Version: 0.1
+;; Version: 0.2.0-snapshot
 ;; URL: https://github.com/yasuyk/helm-go-package
 ;; Package-Requires: ((helm-core "2.2.1") (go-mode "1.4.0") (deferred "0.4.0"))
 
@@ -194,13 +194,13 @@ These actions are available.
                      "*helm go package*"))
 
 (define-obsolete-variable-alias 'helm-source-go-package
-  'helm-go-package-source "0.2")
+  'helm-go-package-source "0.2.0")
 (define-obsolete-variable-alias 'helm-source-go-package-search-on-godoc
-  'helm-go-package-source-search-on-godoc "0.2")
+  'helm-go-package-source-search-on-godoc "0.2.0")
 
 (define-obsolete-function-alias
   'helm-source-go-package-search-on-godoc--filtered-candidate-transformer
-  'helm-go-package--filtered-candidate-transformer "0.2")
+  'helm-go-package--filtered-candidate-transformer "0.2.0")
 
 
 
