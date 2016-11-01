@@ -3,10 +3,9 @@
 ;; Copyright (C) 2013-2016 Yasuyuki Oka
 
 ;; Author: Yasuyuki Oka <yasuyk@gmail.com>
-;; Version: 0.1
+;; Version: 0.2.0-snapshot
 ;; URL: https://github.com/yasuyk/helm-go-package
-;; Package-Requires: ((helm "1.9.3") (go-mode "1.3.1") (deferred "0.4.0"))
-;; Keywords: helm go
+;; Package-Requires: ((helm-core "2.2.1") (go-mode "1.4.0") (deferred "0.4.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -56,6 +55,7 @@ It is `browse-url' by default."
   :group 'helm-go-package)
 
 (defun helm-go-package--package-paths ()
+  "Get paths of each packages."
   (let ((goroot (car (split-string (shell-command-to-string "go env GOROOT") "\n"))))
     (list
      (format "%s/src" goroot) ;; Go >= 1.4
@@ -90,18 +90,21 @@ not found."
   "Format of godoc.org for browse URL.")
 
 (defun helm-go-package--godoc-browse-url (candidate)
+  "Ask a WWW browser to load CANDIDATE package of URL on `https://godoc.org'."
   (funcall helm-go-package-godoc-browse-url-function
            (format helm-go-package-godoc-format candidate)))
 
 (defun helm-go-package--visit-package-directory (candidate)
+  "Visit CANDIDATE package directory."
   (find-file (car (helm-go-package--locate-directory
                    candidate (helm-go-package--package-paths)))))
 
 (defun helm-go-package--persistent-action (candidate)
+  "Show godoc of CANDIDATE as persistent action."
   (with-selected-window (select-window (next-window))
     (godoc candidate)))
 
-(defvar helm-source-go-package
+(defvar helm-go-package-source
   '((name . "Go local packages")
     (candidates . go-packages)
     (persistent-action . helm-go-package--persistent-action)
@@ -124,12 +127,14 @@ not found."
         (t '())))
 
 (defun helm-go-package--search-on-godoc-process ()
+  "Run candidate-porcess."
   (apply (car helm-go-package--search-on-godoc-command-alist)
          "*helm-go-pacakge-search-on-godoc*" nil
          (append (cdr helm-go-package--search-on-godoc-command-alist)
                  (list (format "https://godoc.org/\?\q=%s" helm-pattern)))))
 
-(defun helm-source-go-package-search-on-godoc--filtered-candidate-transformer (candidates source)
+(defun helm-go-package--filtered-candidate-transformer (candidates source)
+  "Filter CANDIDATES.  SOURCE is unused."
   (mapcar (lambda (e)
             (let* ((substrings (split-string e " " t))
                    (package (car substrings))
@@ -141,8 +146,9 @@ not found."
             candidates))
 
 (defun helm-go-package--download-and-install (candidate)
+  "Download CANDIDATE and install it."
   (cl-block nil
-    (unless (y-or-n-p "Download and install packages and dependencies ?")
+    (unless (y-or-n-p "Download and install packages and dependencies? ")
       (cl-return)))
   (lexical-let ((package candidate))
     (deferred:$
@@ -151,10 +157,10 @@ not found."
       (deferred:next
         (lambda () (message (format "%s have been installed." package)))))))
 
-(defvar helm-source-go-package-search-on-godoc
+(defvar helm-go-package-source-search-on-godoc
   '((name . "search Go packages on Godoc")
     (candidates-process . helm-go-package--search-on-godoc-process)
-    (filtered-candidate-transformer . helm-source-go-package-search-on-godoc--filtered-candidate-transformer)
+    (filtered-candidate-transformer . helm-go-package--filtered-candidate-transformer)
     (requires-pattern . 3)
     (persistent-action . t) ;; Disable persistent-action
     (persistent-help . "DoNothing")
@@ -183,9 +189,21 @@ These actions are available.
 * Download and install
 * Display GoDoc"
   (interactive)
-  (helm-other-buffer '(helm-source-go-package
-                       helm-source-go-package-search-on-godoc)
+  (helm-other-buffer '(helm-go-package-source
+                       helm-go-package-source-search-on-godoc)
                      "*helm go package*"))
+
+(define-obsolete-variable-alias 'helm-source-go-package
+  'helm-go-package-source "0.2.0")
+(define-obsolete-variable-alias 'helm-source-go-package-search-on-godoc
+  'helm-go-package-source-search-on-godoc "0.2.0")
+
+(define-obsolete-function-alias
+  'helm-source-go-package-search-on-godoc--filtered-candidate-transformer
+  'helm-go-package--filtered-candidate-transformer "0.2.0")
+
+
+
 
 (provide 'helm-go-package)
 
