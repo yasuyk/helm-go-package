@@ -5,7 +5,7 @@
 ;; Author: Yasuyuki Oka <yasuyk@gmail.com>
 ;; Version: 0.2.0-snapshot
 ;; URL: https://github.com/yasuyk/helm-go-package
-;; Package-Requires: ((helm-core "2.2.1") (go-mode "1.4.0") (deferred "0.4.0"))
+;; Package-Requires: ((emacs "24.3") (helm-core "2.2.1") (go-mode "1.4.0") (deferred "0.4.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -62,7 +62,6 @@ It is `browse-url' by default."
      (format "%s/src"
              (car (split-string (shell-command-to-string "go env GOPATH") "\n")))
      (format "%s/src/pkg" goroot)))) ;; Go <= 1.3.3
-
 
 (defun helm-go-package--locate-directory (name path)
   "Locate all occurrences of the sub-directory NAME in PATH.
@@ -126,12 +125,17 @@ not found."
          '(start-process-shell-command "wget" "-O" "-" "--quiet" "--header='Accept: text/plain'"))
         (t '())))
 
+(defun helm-go-package--godoc-url-with-query ()
+  "Get url of godoc.org with query."
+  (url-encode-url
+   (format "https://godoc.org/\?\q=%s" helm-pattern)))
+
 (defun helm-go-package--search-on-godoc-process ()
   "Run candidate-porcess."
   (apply (car helm-go-package--search-on-godoc-command-alist)
          "*helm-go-pacakge-search-on-godoc*" nil
          (append (cdr helm-go-package--search-on-godoc-command-alist)
-                 (list (format "https://godoc.org/\?\q=%s" helm-pattern)))))
+                 (list (helm-go-package--godoc-url-with-query)))))
 
 (defun helm-go-package--filtered-candidate-transformer (candidates source)
   "Filter CANDIDATES.  SOURCE is unused."

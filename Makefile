@@ -12,7 +12,7 @@ ELPA_DIR = $(shell EMACS=$(EMACS) $(CASK) package-directory)
 INIT_PACKAGE_EL="(progn (require 'cask) (cask-initialize \".\"))"
 
 .PHONY : test
-test: test-checkdoc package-lint test-package-install
+test: test-checkdoc package-lint test-package-install unit-tests
 
 .PHONY : travis-ci
 travis-ci: print-deps package-lint test-package-install

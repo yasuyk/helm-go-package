@@ -10,6 +10,7 @@ helm sources for [Go programming language](http://golang.org/)'s package.
 
 ## Requirements
 
+- Emacs >= 24.3
 - [helm][helm]
 - [go-mode][go-mode]
 
@@ -25,7 +26,6 @@ Just drop `helm-go-package.el`. somewhere in your `load-path`.
 
 ### MELPA
 
-If you're an Emacs 24 user or you have a recent version of package.el
 you can install `helm-go-package.el` from the [MELPA](http://melpa.milkbox.net/) repository.
 
 ## Usage
