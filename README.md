@@ -1,4 +1,10 @@
-## helm-go-package [![licence][gplv3-badge]][gplv3-link] [![melpa badge][melpa-badge]][melpa-link] [![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
+## helm-go-package
+
+[![licence][gplv3-badge]][gplv3-link]
+[![melpa badge][melpa-badge]][melpa-link]
+[![melpa stable badge][melpa-stable-badge]][melpa-stable-link]
+[![travis build status](https://travis-ci.org/yasuyk/helm-go-package.svg?branch=master)](https://travis-ci.org/yasuyk/helm-go-package)
+
 
 helm sources for [Go programming language](http://golang.org/)'s package.
 
