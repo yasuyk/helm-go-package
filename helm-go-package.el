@@ -5,7 +5,7 @@
 ;; Author: Yasuyuki Oka <yasuyk@gmail.com>
 ;; Version: 0.1
 ;; URL: https://github.com/yasuyk/helm-go-package
-;; Package-Requires: ((helm "1.9.3") (go-mode "1.3.1") (deferred "0.4.0"))
+;; Package-Requires: ((helm-core "2.2.1") (go-mode "1.4.0") (deferred "0.4.0"))
 ;; Keywords: helm go
 
 ;; This program is free software; you can redistribute it and/or modify
