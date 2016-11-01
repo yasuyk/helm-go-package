@@ -56,6 +56,7 @@ It is `browse-url' by default."
   :group 'helm-go-package)
 
 (defun helm-go-package--package-paths ()
+  "Get paths of each packages."
   (let ((goroot (car (split-string (shell-command-to-string "go env GOROOT") "\n"))))
     (list
      (format "%s/src" goroot) ;; Go >= 1.4
@@ -90,14 +91,17 @@ not found."
   "Format of godoc.org for browse URL.")
 
 (defun helm-go-package--godoc-browse-url (candidate)
+  "Ask a WWW browser to load CANDIDATE package of URL on `https://godoc.org'."
   (funcall helm-go-package-godoc-browse-url-function
            (format helm-go-package-godoc-format candidate)))
 
 (defun helm-go-package--visit-package-directory (candidate)
+  "Visit CANDIDATE package directory."
   (find-file (car (helm-go-package--locate-directory
                    candidate (helm-go-package--package-paths)))))
 
 (defun helm-go-package--persistent-action (candidate)
+  "Show godoc of CANDIDATE as persistent action."
   (with-selected-window (select-window (next-window))
     (godoc candidate)))
 
@@ -124,12 +128,14 @@ not found."
         (t '())))
 
 (defun helm-go-package--search-on-godoc-process ()
+  "Run candidate-porcess."
   (apply (car helm-go-package--search-on-godoc-command-alist)
          "*helm-go-pacakge-search-on-godoc*" nil
          (append (cdr helm-go-package--search-on-godoc-command-alist)
                  (list (format "https://godoc.org/\?\q=%s" helm-pattern)))))
 
 (defun helm-source-go-package-search-on-godoc--filtered-candidate-transformer (candidates source)
+  "Filter CANDIDATES.  SOURCE is unused."
   (mapcar (lambda (e)
             (let* ((substrings (split-string e " " t))
                    (package (car substrings))
@@ -141,8 +147,9 @@ not found."
             candidates))
 
 (defun helm-go-package--download-and-install (candidate)
+  "Download CANDIDATE and install it."
   (cl-block nil
-    (unless (y-or-n-p "Download and install packages and dependencies ?")
+    (unless (y-or-n-p "Download and install packages and dependencies? ")
       (cl-return)))
   (lexical-let ((package candidate))
     (deferred:$
