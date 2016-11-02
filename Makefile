@@ -29,7 +29,7 @@ clean-elpa:
 
 .PHONY : clean-elc
 clean-elc:
-	cask clean-elc
+	${CASK} clean-elc
 
 .PHONY : clean
 clean: clean-elpa clean-elc

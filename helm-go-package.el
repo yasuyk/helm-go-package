@@ -5,7 +5,7 @@
 ;; Author: Yasuyuki Oka <yasuyk@gmail.com>
 ;; Version: 0.2.0-snapshot
 ;; URL: https://github.com/yasuyk/helm-go-package
-;; Package-Requires: ((emacs "24.3") (helm-core "2.2.1") (go-mode "1.4.0") (deferred "0.4.0"))
+;; Package-Requires: ((emacs "24.4") (helm-core "2.2.1") (go-mode "1.4.0") (deferred "0.4.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

@@ -10,9 +10,9 @@ helm sources for [Go programming language](http://golang.org/)'s package.
 
 ## Requirements
 
-- Emacs >= 24.3
 - [helm][helm]
 - [go-mode][go-mode]
+- [in accordance with helm][helm requirements], Emacs-24.4 or later versions.
 
 ## Installation
 
@@ -84,3 +84,4 @@ Add the following to your emacs init file:
 [melpa-stable-badge]: http://stable.melpa.org/packages/helm-go-package-badge.svg
 [gplv3-badge]:http://img.shields.io/badge/license-GPLv3-blue.svg
 [gplv3-link]:https://www.gnu.org/copyleft/gpl.html
+[helm requirements]:https://github.com/emacs-helm/helm#requirements
