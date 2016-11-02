@@ -12,6 +12,7 @@ helm sources for [Go programming language](http://golang.org/)'s package.
 
 - [helm][helm]
 - [go-mode][go-mode]
+- [deferred](https://github.com/kiwanami/emacs-deferred)
 - [in accordance with helm][helm requirements], Emacs-24.4 or later versions.
 
 ## Installation
