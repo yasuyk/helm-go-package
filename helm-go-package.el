@@ -104,11 +104,11 @@ not found."
     (godoc candidate)))
 
 (defvar helm-go-package-source
-  '((name . "Go local packages")
-    (candidates . go-packages)
-    (persistent-action . helm-go-package--persistent-action)
-    (persistent-help . "Show documentation")
-    (action . (("Add a new import" . (lambda (candidate)
+  (helm-build-sync-source "Go local packages"
+    :candidates 'go-packages
+    :persistent-action 'helm-go-package--persistent-action
+    :persistent-help  "Show documentation"
+    :action '(("Add a new import" . (lambda (candidate)
                                        (go-import-add nil candidate)))
                ("Add a new import as" . (lambda (candidate)
                                           (go-import-add t candidate)))
@@ -116,7 +116,6 @@ not found."
                ("Display GoDoc" . helm-go-package--godoc-browse-url)
                ("Visit package's directory" .
                 helm-go-package--visit-package-directory))))
-  "Helm source for Go local package.")
 
 (defvar helm-go-package--search-on-godoc-command-alist
   (cond ((executable-find "curl")
@@ -161,17 +160,21 @@ not found."
       (deferred:next
         (lambda () (message (format "%s have been installed." package)))))))
 
+(defclass helm-go-package-source-class-search-on-godoc (helm-source-async)
+  ((candidates-process :initform helm-go-package--search-on-godoc-process)
+   (requires-pattern :initform 3)
+   (volatile :initform t)
+   (filtered-candidate-transformer
+    :initform helm-go-package--filtered-candidate-transformer)
+   (action :initform (helm-make-actions
+                      "Download and install" 'helm-go-package--download-and-install
+                      "Display GoDoc" 'helm-go-package--godoc-browse-url))
+   (persistent-action :initform 'ignore)
+   (persistent-help :initform "DoNothing")))
+
 (defvar helm-go-package-source-search-on-godoc
-  '((name . "search Go packages on Godoc")
-    (candidates-process . helm-go-package--search-on-godoc-process)
-    (filtered-candidate-transformer . helm-go-package--filtered-candidate-transformer)
-    (requires-pattern . 3)
-    (persistent-action . t) ;; Disable persistent-action
-    (persistent-help . "DoNothing")
-    (action . (("Download and install" . helm-go-package--download-and-install)
-               ("Display GoDoc" . helm-go-package--godoc-browse-url)))
-    (volatile)
-    (delayed)))
+  (helm-make-source "search Go packages on Godoc"
+      'helm-go-package-source-class-search-on-godoc))
 
 ;;;###autoload
 (defun helm-go-package ()
@@ -197,6 +200,7 @@ These actions are available.
                        helm-go-package-source-search-on-godoc)
                      "*helm go package*"))
 
+
 (define-obsolete-variable-alias 'helm-source-go-package
   'helm-go-package-source "0.2.0")
 (define-obsolete-variable-alias 'helm-source-go-package-search-on-godoc
@@ -205,8 +209,6 @@ These actions are available.
 (define-obsolete-function-alias
   'helm-source-go-package-search-on-godoc--filtered-candidate-transformer
   'helm-go-package--filtered-candidate-transformer "0.2.0")
-
-
 
 
 (provide 'helm-go-package)
