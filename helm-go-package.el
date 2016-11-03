@@ -183,8 +183,8 @@ not found."
    (filtered-candidate-transformer
     :initform 'helm-go-package--filtered-candidate-transformer)
    (action :initform 'helm-go-package-search-on-godoc-actions)
-   (persistent-action :initform 'ignore)
-   (persistent-help :initform "DoNothing")))
+   (persistent-action :initform 'helm-go-package--godoc-browse-url)
+   (persistent-help :initform "Browse GoDoc")))
 
 (defvar helm-go-package-source-search-on-godoc
   (helm-make-source "search Go packages on Godoc"
