@@ -36,6 +36,7 @@
 (require 'go-mode)
 (require 'deferred)
 
+
 (defgroup helm-go-package nil
   "Go package related Applications and libraries for Helm."
   :prefix "helm-go-package-"
@@ -47,6 +48,26 @@ It is `browse-url' by default."
   :group 'helm-go-package
   :type 'symbol)
 
+(defcustom helm-go-package-actions
+  (helm-make-actions
+   "Add a new import"  (lambda (candidate) (go-import-add nil candidate))
+   "Add a new import as"  (lambda (candidate) (go-import-add t candidate))
+   "Show documentation" 'godoc
+   "Display GoDoc" 'helm-go-package--godoc-browse-url
+   "Visit package's directory" 'helm-go-package--visit-package-directory)
+  "Actions for helm go package."
+  :group 'helm-go-package
+  :type '(alist :key-type string :value-type function))
+
+(defcustom helm-go-package-search-on-godoc-actions
+  (helm-make-actions
+   "Download and install" 'helm-go-package--download-and-install
+   "Display GoDoc" 'helm-go-package--godoc-browse-url)
+  "Actions for helm go package search on godoc."
+  :group 'helm-go-package
+  :type '(alist :key-type string :value-type function))
+
+
 ;;; Faces
 (defface helm-source-go-package-godoc-description
   (let ((str (face-foreground 'font-lock-string-face)))
@@ -54,6 +75,8 @@ It is `browse-url' by default."
   "Face used for Godoc description."
   :group 'helm-go-package)
 
+
+
 (defun helm-go-package--package-paths ()
   "Get paths of each packages."
   (let ((goroot (car (split-string (shell-command-to-string "go env GOROOT") "\n"))))
@@ -108,14 +131,7 @@ not found."
     :candidates 'go-packages
     :persistent-action 'helm-go-package--persistent-action
     :persistent-help  "Show documentation"
-    :action '(("Add a new import" . (lambda (candidate)
-                                       (go-import-add nil candidate)))
-               ("Add a new import as" . (lambda (candidate)
-                                          (go-import-add t candidate)))
-               ("Show documentation" . godoc)
-               ("Display GoDoc" . helm-go-package--godoc-browse-url)
-               ("Visit package's directory" .
-                helm-go-package--visit-package-directory))))
+    :action 'helm-go-package-actions))
 
 (defvar helm-go-package--search-on-godoc-command-alist
   (cond ((executable-find "curl")
@@ -161,14 +177,12 @@ not found."
         (lambda () (message (format "%s have been installed." package)))))))
 
 (defclass helm-go-package-source-class-search-on-godoc (helm-source-async)
-  ((candidates-process :initform helm-go-package--search-on-godoc-process)
+  ((candidates-process :initform 'helm-go-package--search-on-godoc-process)
    (requires-pattern :initform 3)
    (volatile :initform t)
    (filtered-candidate-transformer
-    :initform helm-go-package--filtered-candidate-transformer)
-   (action :initform (helm-make-actions
-                      "Download and install" 'helm-go-package--download-and-install
-                      "Display GoDoc" 'helm-go-package--godoc-browse-url))
+    :initform 'helm-go-package--filtered-candidate-transformer)
+   (action :initform 'helm-go-package-search-on-godoc-actions)
    (persistent-action :initform 'ignore)
    (persistent-help :initform "DoNothing")))
 
