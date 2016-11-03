@@ -47,7 +47,7 @@ test-checkdoc: elpa
 
 
 .PHONY : package-lint
-package-lint: elpa clean-package-install
+package-lint: elpa
 	@echo "-- package lint --"
 	$(CASK) exec $(EMACS) -batch -Q --eval $(INIT_PACKAGE_EL) -l package-lint.el -f package-lint-batch-and-exit $(SRC)
 
