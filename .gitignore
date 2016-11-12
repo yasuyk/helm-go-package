@@ -1,4 +1,3 @@
 .cask*
 .elc*
 elpa
-test/*.log
